@@ -1,6 +1,8 @@
 { config, pkgs, ... }:
 
 {
+  imports = [ ./sway-config.nix ];
+
   nixpkgs.config = {
     allowUnfree = true;
   };
@@ -28,7 +30,7 @@
 
   # Enable Wayland + Sway
   services.xserver.enable = true;
-  
+
   programs.sway = {
     enable = true;
     wrapperFeatures.gtk = true;
@@ -67,7 +69,6 @@
       kdePackages.kate
     ];
   };
-
 
   home-manager.useUserPackages = true;
   home-manager.useGlobalPkgs = true;
