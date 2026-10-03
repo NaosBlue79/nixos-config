@@ -167,22 +167,4 @@ in
       };
     };
   };
-
-  services.mako = {
-    enable = true;
-    settings = {
-      font = "Iosevka Nerd Font 11";
-      background-color = mocha.base;
-      text-color = mocha.text;
-      border-color = mocha.blue;
-      border-size = 2;
-      padding = "12,15";
-      margin = "10";
-      default-timeout = 3000;
-      # Add urgency levels for visual hierarchy
-      icons = "on";
-      max-icon-size = 32;
-    };
-  };
-
 }
