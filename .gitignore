@@ -1,0 +1,6 @@
+result
+result-*
+.dirlocals
+.local/share/home-manager
+secrets.nix
+.env
