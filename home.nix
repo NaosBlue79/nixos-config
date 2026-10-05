@@ -24,6 +24,7 @@ in
     ./scripts.nix
     ./fetch.nix
     ./waybar-config.nix
+    ./sway-config.nix
   ];
 
   # User-specific packages
@@ -124,23 +125,8 @@ in
       #text:selected { color: ${mocha.blue}; }
     '';
   };
-
-  # Mako as a user program (Home Manager)
-  programs.mako = {
-    enable = true;
-    settings = {
-      font = "Iosevka Nerd Font 11";
-      background-color = mocha.base;
-      text-color = mocha.text;
-      border-color = mocha.blue;
-      border-size = 2;
-      padding = "12,15";
-      margin = "10";
-      default-timeout = 3000;
-      icons = "on";
-      max-icon-size = 32;
-    };
-  };
+  
 
   home.stateVersion = "26.05";
 }
+

@@ -34,7 +34,8 @@
     shading = #".,-~:;=!*#$@";
 	      #" ․⁚⁖⁘⁙";
 	      #" ░▒▓█";
-	      "oO8oO0QoQ0o8Oo";
+	      #"oO8oO0QoQ0o8Oo";
+        "NaosBlue79";
     light = "top-left";
   };
 }

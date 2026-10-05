@@ -21,7 +21,7 @@ let
     subtext1 = "#bac2de";
     subtext0 = "#a6adc8";
     overlay2 = "#9399b2";
-    overlay1 = "#7f849c";
+    overlay1 = "#8f849c";
     overlay0 = "#6c7086";
     surface2 = "#585b70";
     surface1 = "#45475a";
@@ -29,19 +29,20 @@ let
     base = "#1e1e2e";
     mantle = "#181825";
     crust = "#11111b";
+    mod = "Mod4";
   };
 in
 {
   wayland.windowManager.sway = {
     enable = true;
-    config = {
+    config = rec {
       modifier = "Mod4";
       terminal = "ghostty";
       menu = "wofi --show drun";
 
       gaps = {
         inner = 8;
-        outer = 4;
+       outer = 4;
       };
 
       # Enhanced window styling
@@ -94,61 +95,56 @@ in
           childBorder = mocha.overlay0;
         };
       };
+      keybindings = lib.mkOptionDefault {
+        "${modifier}+Return" = "exec ghostty";
+        "${modifier}+d" = "exec wofi --show drun";
+        "${modifier}+Shift+q" = "kill";
+        "${modifier}+Shift+e" = "exec swaynag -t warning -m 'Exit sway?' -b 'Yes' 'swaymsg exit'";
+        "${modifier}+Shift+o" = "exec swaylock -f -c ${mocha.crust}";
 
-      keybindings =
-        let
-          mod = config.wayland.windowManager.sway.config.modifier;
-        in
-        lib.mkOptionDefault {
-          "${mod}+Return" = "exec ghostty";
-          "${mod}+d" = "exec wofi --show drun";
-          "${mod}+Shift+q" = "kill";
-          "${mod}+Shift+e" = "exec swaynag -t warning -m 'Exit sway?' -b 'Yes' 'swaymsg exit'";
-          "${mod}+Shift+o" = "exec swaylock -f -c ${mocha.crust}";
+        "${modifier}+h" = "focus left";
+        "${modifier}+j" = "focus down";
+        "${modifier}+k" = "focus up";
+        "${modifier}+l" = "focus right";
 
-          "${mod}+h" = "focus left";
-          "${mod}+j" = "focus down";
-          "${mod}+k" = "focus up";
-          "${mod}+l" = "focus right";
+        "${modifier}+Shift+h" = "move left";
+        "${modifier}+Shift+j" = "move down";
+        "${modifier}+Shift+k" = "move up";
+        "${modifier}+Shift+l" = "move right";
 
-          "${mod}+Shift+h" = "move left";
-          "${mod}+Shift+j" = "move down";
-          "${mod}+Shift+k" = "move up";
-          "${mod}+Shift+l" = "move right";
+        "${modifier}+1" = "workspace 1";
+        "${modifier}+2" = "workspace 2";
+        "${modifier}+3" = "workspace 3";
+        "${modifier}+4" = "workspace 4";
+        "${modifier}+5" = "workspace 5";
+        "${modifier}+6" = "workspace 6";
+        "${modifier}+7" = "workspace 7";
+        "${modifier}+8" = "workspace 8";
+        "${modifier}+9" = "workspace 9";
 
-          "${mod}+1" = "workspace 1";
-          "${mod}+2" = "workspace 2";
-          "${mod}+3" = "workspace 3";
-          "${mod}+4" = "workspace 4";
-          "${mod}+5" = "workspace 5";
-          "${mod}+6" = "workspace 6";
-          "${mod}+7" = "workspace 7";
-          "${mod}+8" = "workspace 8";
-          "${mod}+9" = "workspace 9";
+        "${modifier}+Shift+1" = "move container to workspace 1";
+        "${modifier}+Shift+2" = "move container to workspace 2";
+        "${modifier}+Shift+3" = "move container to workspace 3";
+        "${modifier}+Shift+4" = "move container to workspace 4";
+        "${modifier}+Shift+5" = "move container to workspace 5";
+        "${modifier}+Shift+6" = "move container to workspace 6";
+        "${modifier}+Shift+7" = "move container to workspace 7";
+        "${modifier}+Shift+8" = "move container to workspace 8";
+        "${modifier}+Shift+9" = "move container to workspace 9";
 
-          "${mod}+Shift+1" = "move container to workspace 1";
-          "${mod}+Shift+2" = "move container to workspace 2";
-          "${mod}+Shift+3" = "move container to workspace 3";
-          "${mod}+Shift+4" = "move container to workspace 4";
-          "${mod}+Shift+5" = "move container to workspace 5";
-          "${mod}+Shift+6" = "move container to workspace 6";
-          "${mod}+Shift+7" = "move container to workspace 7";
-          "${mod}+Shift+8" = "move container to workspace 8";
-          "${mod}+Shift+9" = "move container to workspace 9";
+        "${modifier}+v" = "split vertical";
+        "${modifier}+b" = "split horizontal";
+        "${modifier}+f" = "fullscreen toggle";
+        "${modifier}+Shift+space" = "floating toggle";
+        "${modifier}+space" = "focus mode_toggle";
+        "${modifier}+Shift+c" = "reload";
 
-          "${mod}+v" = "split vertical";
-          "${mod}+b" = "split horizontal";
-          "${mod}+f" = "fullscreen toggle";
-          "${mod}+Shift+space" = "floating toggle";
-          "${mod}+space" = "focus mode_toggle";
-          "${mod}+Shift+c" = "reload";
-
-          "XF86AudioRaiseVolume" = "exec pactl set-sink-volume @DEFAULT_SINK@ +5%";
-          "XF86AudioLowerVolume" = "exec pactl set-sink-volume @DEFAULT_SINK@ -5%";
-          "XF86AudioMute" = "exec pactl set-sink-mute @DEFAULT_SINK@ toggle";
-          "XF86MonBrightnessUp" = "exec brightnessctl set +5%";
-          "XF86MonBrightnessDown" = "exec brightnessctl set 5%-";
-        };
+        "XF86AudioRaiseVolume" = "exec pactl set-sink-volume @DEFAULT_SINK@ +5%";
+        "XF86AudioLowerVolume" = "exec pactl set-sink-volume @DEFAULT_SINK@ -5%";
+        "XF86AudioMute" = "exec pactl set-sink-mute @DEFAULT_SINK@ toggle";
+        "XF86MonBrightnessUp" = "exec brightnessctl set +5%";
+        "XF86MonBrightnessDown" = "exec brightnessctl set 5%-";
+      };
 
       startup = [
         { command = "mako"; }
@@ -168,3 +164,4 @@ in
     };
   };
 }
+
