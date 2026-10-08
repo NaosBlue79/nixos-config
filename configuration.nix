@@ -30,10 +30,12 @@
   # Enable Wayland + Sway
   services.xserver.enable = true;
 
-  programs.sway = {
-    enable = true;
-    wrapperFeatures.gtk = true;
-  };
+  program.niri.enable = true;
+
+  #programs.sway = {
+  #  enable = true;
+  #  wrapperFeatures.gtk = true;
+  #};
 
   # Needed for screen locking, notifications, etc. on Wayland
   xdg.portal = {

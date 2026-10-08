@@ -24,7 +24,7 @@ in
     ./scripts.nix
     ./fetch.nix
     ./waybar-config.nix
-    ./sway-config.nix
+    ./niri.nix
   ];
 
   # User-specific packages
@@ -48,9 +48,8 @@ in
       btw = "echo i us nixos btw";
     };
     profileExtra = ''
-      # Auto-start Sway on login
       if [ -z "$DISPLAY" ] && [ "$(tty)" = "/dev/tty1" ]; then
-        exec sway
+        exec niri-session
       fi
     '';
   };

@@ -11,10 +11,16 @@
       url = "github:nix-community/nixvim/nixos-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    niri = {
+      url = "github:sodiboo/niri/packaging-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     areofyl-fetch.url = "github:areofyl/fetch";
   };
 
-  outputs = { self, nixpkgs, home-manager, nixvim, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, nixvim, niri, ... }@inputs:
     {
       nixosConfigurations.znet = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
@@ -22,7 +28,8 @@
         modules = [
           ./hardware-configuration.nix
           ./configuration.nix
-	  nixvim.nixosModules.nixvim
+	        nixvim.nixosModules.nixvim
+          niri.nixosModules.niri
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
@@ -31,6 +38,7 @@
             home-manager.users.mz = {
               imports = [
                 nixvim.homeModules.nixvim
+                niri.homeModules.niri
                 ./home.nix
               ];
             };
