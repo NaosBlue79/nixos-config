@@ -2,7 +2,7 @@
 
 {
   programs.niri = {
-    enable = true;
+    
     settings = {
       input = {
         keyboard = {
@@ -16,13 +16,7 @@
         };
       };
 
-      output = { 
-        "eDP-1" = {
-          resolution = [ 1600 900 ];
-          refresh-rate = 60.0;
-          scale = 1.0;
-        };
-      };
+      output = eDP-1; 
 
       layout = {
           gaps = 16;
@@ -40,7 +34,7 @@
             { name = "3"; }
           ];
 
-          bind = with config.lib.niri.actions; [
+          binds = with config.lib.niri.actions; [
             { mod = [ "Super" ]; key = "T"; action = spawn "ghostty"; }
             { mod = [ "Super" ]; key = "D"; action = spawn "wofi --show drun"; }
             { mod = [ "Super" ]; key = "Q"; action = spawn  close-window; }

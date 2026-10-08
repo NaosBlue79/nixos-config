@@ -13,7 +13,7 @@
     };
 
     niri = {
-      url = "github:sodiboo/niri/packaging-nix";
+      url = "github:sodiboo/niri-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -38,7 +38,6 @@
             home-manager.users.mz = {
               imports = [
                 nixvim.homeModules.nixvim
-                niri.homeModules.niri
                 ./home.nix
               ];
             };

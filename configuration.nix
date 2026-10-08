@@ -30,7 +30,7 @@
   # Enable Wayland + Sway
   services.xserver.enable = true;
 
-  program.niri.enable = true;
+  programs.niri.enable = true;
 
   #programs.sway = {
   #  enable = true;
@@ -85,6 +85,7 @@
     wget
     btop
     neovim
+    ghostty
     swaylock
     swayidle
     wl-clipboard

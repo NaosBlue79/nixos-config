@@ -38,6 +38,7 @@ in
     wofi
     mako
     thunar
+    swww
   ];
 
   programs.bash = {

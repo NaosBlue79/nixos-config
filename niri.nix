@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+ { config, lib, pkgs, ... }:
 
 let
   mocha = {
@@ -17,45 +17,37 @@ let
     blue = "#89b4fa";
     lavender = "#b4befe";
     text = "#cdd6f4";
-    subtext1 = "#bac2de";
-    subtext0 = "#a6adc8";
-    overlay2 = "#9399b2";
-    overlay1 = "#8f849c";
-    overlay0 = "#6c7086";
-    surface2 = "#585b70";
-    surface1 = "#45475a";
     surface0 = "#313244";
+    surface1 = "#45475a";
     base = "#1e1e2e";
-    mantle = "#181825";
     crust = "#11111b";
   };
 in
 {
   programs.niri = {
-    enable = true;
     settings = {
+
       input = {
-        keyboard = {
-          xkb = {
-            layout = "us";
-          };
-        };
+        keyboard.xkb.layout = "us";
+
         touchpad = {
           tap = true;
           natural-scroll = false;
-        };
-      };
-
-      output = {
-        "eDP-1" = {
-          resolution = [ 1600 900 ];
-          refresh-rate = 60.0;
-          scale = 1.0;
+          click-method = "button-areas";
         };
       };
 
       layout = {
         gaps = 16;
+        always-center-single-column = true;
+
+        focus-ring = {
+          enable = true;
+          width = 3;
+          active.color = mocha.lavender;
+          inactive.color = mocha.surface1;
+        };
+
         struts = {
           left = 0;
           right = 0;
@@ -64,47 +56,101 @@ in
         };
       };
 
-      workspaces = [
-        { name = "1"; }
-        { name = "2"; }
-        { name = "3"; }
+      workspaces = {
+        "1" = {};
+        "2" = {};
+        "3" = {};
+        "4" = {};
+        "5" = {};
+      };
+
+      spawn-at-startup = [
+        { command = [ "waybar" ]; }
+        { command = [ "mako" ]; }
+        { command = [ "swww-daemon" ];}
+        { command = [ "swww" "img" "/home/mz/Downloads/wallhaven-oggvw9.jpg"]; }
       ];
 
-      binds = with config.lib.niri.actions; [
-        { mod = [ "Super" ]; key = "T"; action = spawn "ghostty"; }
-        { mod = [ "Super" ]; key = "D"; action = spawn "wofi --show drun"; }
-        { mod = [ "Super" ]; key = "Q"; action = close-window; }
-        { mod = [ "Super" "Ctrl" ]; key = "L"; action = spawn "swaylock -f -c ${mocha.crust}"; }
+      binds = with config.lib.niri.actions; {
 
-        { mod = [ "Super" ]; key = "H"; action = focus-column-left; }
-        { mod = [ "Super" ]; key = "J"; action = focus-window-down; }
-        { mod = [ "Super" ]; key = "K"; action = focus-window-up; }
-        { mod = [ "Super" ]; key = "L"; action = focus-column-right; }
+        #
+        # Applications
+        #
+        "Mod+Return".action = spawn "ghostty";
+        "Mod+T".action = spawn "ghostty";
+        "Mod+D".action = spawn "wofi" "--show" "drun";
+        "Mod+E".action = spawn "thunar";
+        "Mod+B".action = spawn "firefox";
 
-        { mod = [ "Super" "Shift" ]; key = "H"; action = move-column-left; }
-        { mod = [ "Super" "Shift" ]; key = "J"; action = move-window-down; }
-        { mod = [ "Super" "Shift" ]; key = "K"; action = move-window-up; }
-        { mod = [ "Super" "Shift" ]; key = "L"; action = move-column-right; }
+        #
+        # Session
+        #
+        "Mod+Q".action = close-window;
+        "Mod+Shift+Q".action = quit;
 
-        { mod = [ "Super" ]; key = "1"; action = activate-workspace 0; }
-        { mod = [ "Super" ]; key = "2"; action = activate-workspace 1; }
-        { mod = [ "Super" ]; key = "3"; action = activate-workspace 2; }
+        "Mod+Ctrl+L".action =
+          spawn "swaylock" "-f" "-c" mocha.crust;
 
-        { mod = [ "Super" "Shift" ]; key = "1"; action = move-window-to-workspace 0; }
-        { mod = [ "Super" "Shift" ]; key = "2"; action = move-window-to-workspace 1; }
-        { mod = [ "Super" "Shift" ]; key = "3"; action = move-window-to-workspace 2; }
+        #"Mod+Shift+C".action = reload-config;
 
-        { mod = [ "Super" ]; key = "F"; action = maximize-column; }
-        { mod = [ "Super" ]; key = "C"; action = center-column; }
-        { mod = [ "Super" "Shift" ]; key = "F"; action = fullscreen-window; }
-        { mod = [ "Super" "Shift" ]; key = "C"; action = reload-config; }
+        #
+        # Navigation
+        #
+        "Mod+H".action = focus-column-left;
+        "Mod+J".action = focus-window-down;
+        "Mod+K".action = focus-window-up;
+        "Mod+L".action = focus-column-right;
 
-        { mod = []; key = "XF86AudioRaiseVolume"; action = spawn "pactl set-sink-volume @DEFAULT_SINK@ +5%"; }
-        { mod = []; key = "XF86AudioLowerVolume"; action = spawn "pactl set-sink-volume @DEFAULT_SINK@ -5%"; }
-        { mod = []; key = "XF86AudioMute"; action = spawn "pactl set-sink-mute @DEFAULT_SINK@ toggle"; }
-        { mod = []; key = "XF86MonBrightnessUp"; action = spawn "brightnessctl set +5%"; }
-        { mod = []; key = "XF86MonBrightnessDown"; action = spawn "brightnessctl set 5%-"; }
-      ];
+        #
+        # Move windows
+        #
+        "Mod+Shift+H".action = move-column-left;
+        "Mod+Shift+J".action = move-window-down;
+        "Mod+Shift+K".action = move-window-up;
+        "Mod+Shift+L".action = move-column-right;
+
+        #
+        # Layout
+        #
+        "Mod+F".action = maximize-column;
+        "Mod+Shift+F".action = fullscreen-window;
+        "Mod+C".action = center-column;
+
+        #
+        # Floating
+        #
+        "Mod+V".action = toggle-window-floating;
+
+        #
+        # Workspaces
+        #
+        "Mod+1".action = focus-workspace "1";
+        "Mod+2".action = focus-workspace "2";
+        "Mod+3".action = focus-workspace "3";
+        "Mod+4".action = focus-workspace "4";
+        "Mod+5".action = focus-workspace "5";
+
+        #
+        # Audio
+        #
+        "XF86AudioRaiseVolume".action =
+          spawn "pactl" "set-sink-volume" "@DEFAULT_SINK@" "+5%";
+
+        "XF86AudioLowerVolume".action =
+          spawn "pactl" "set-sink-volume" "@DEFAULT_SINK@" "-5%";
+
+        "XF86AudioMute".action =
+          spawn "pactl" "set-sink-mute" "@DEFAULT_SINK@" "toggle";
+
+        #
+        # Brightness
+        #
+        "XF86MonBrightnessUp".action =
+          spawn "brightnessctl" "set" "+5%";
+
+        "XF86MonBrightnessDown".action =
+          spawn "brightnessctl" "set" "5%-";
+      };
     };
   };
 }
