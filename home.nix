@@ -8,7 +8,6 @@
 
   imports = [
     inputs.noctalia.homeModules.default
-    inputs.zen-browser.homeModules.beta
     ./ghostty.nix
     ./scripts.nix
     ./fetch.nix
@@ -53,11 +52,6 @@ systemd.user.services.noctalia = {
     WantedBy = [ "graphical-session.target" ];
   };
 };
-
-  programs.zen-browser = {
-    enable = true;
-  };
-
 
   programs.bash = {
     enable = true;

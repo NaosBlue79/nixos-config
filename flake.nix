@@ -21,33 +21,17 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    zen-browser = {
-      url = "github:0xc000022070/zen-browser-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     noctalia = {
       url = "github:noctalia-dev/noctalia-shell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
 
-    stylix = {
-      url = "github:nix-community/stylix/release-26.05";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-
-    pyroclear = {
-      url = "github:shreyanth-sureshkrishnaa/pyroclear";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     areofyl-fetch.url = "github:areofyl/fetch";
 
   };
 
-  outputs = { self, nixpkgs, home-manager, nixvim, niri, stylix, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, nixvim, niri, noctalia, ... }@inputs:
     {
       nixosConfigurations.znet = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";

@@ -18,7 +18,13 @@
   };  
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
-  services.displayManager.sddm.enable = true;
+  services.displayManager.sddm = {
+  enable = true;
+  wayland.enable = true; # Enables experimental Wayland support
+  # compositor = "kwin"; # Optional: change from default "weston"
+};
+  services.xserver.enable = true;  
+  programs.niri.enable = true;
 
   powerManagement.enable = true;
   services.power-profiles-daemon.enable = true;
@@ -42,19 +48,19 @@
     LC_TIME = "en_US.UTF-8";
   };
 
-  services.xserver.enable = true;
-  services.displayManager.defaultSession = "niri";
-  programs.niri.enable = true;
-
-
   # Needed for screen locking, notifications, etc. on Wayland
   xdg.portal = {
     enable = true;
     wlr.enable = true;
     extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    config.common.default = "*";
   };
 
   programs.nixvim = {
+    enable = true;
+  }; 
+
+  programs.firefox = {
     enable = true;
   };
 
@@ -100,6 +106,7 @@
     wget
     btop
     neovim
+    gparted
     ghostty
     swaylock
     swayidle
@@ -119,12 +126,6 @@
   fonts.packages = with pkgs; [
     nerd-fonts.iosevka
   ];
-
-  environment.sessionVariables = {
-    editor = "neovim";
-    browser = "librewolf";
-    terminal = "ghostty";
-  };
 
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
