@@ -13,7 +13,7 @@
 
     nixvim = {
       url = "github:nix-community/nixvim/nixos-26.05";
-      inputs.nixpkgs.follows = "nixpkgs";
+      #inputs.nixpkgs.follows = "nixpkgs";
     };
 
     niri = {
@@ -39,7 +39,7 @@
         modules = [
           ./hardware-configuration.nix
           ./configuration.nix
-          nixvim.nixosModules.nixvim
+          { nixpkgs.overlays = [ (import ./overlays/imageio-skip-broken-tests.nix) ]; }
           niri.nixosModules.niri
           inputs.noctalia.nixosModules.default
           home-manager.nixosModules.home-manager
@@ -50,6 +50,7 @@
             home-manager.users.mz = {
               imports = [
                 ./home.nix
+                #nixvim.homeModules.nixvim
               ];
             };
           }

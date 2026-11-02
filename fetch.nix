@@ -10,7 +10,7 @@
   programs.fetch = {
     enable = true;
 
-    labelColor = "red";
+    labelColor = "green";
 
 
     info = [
@@ -32,11 +32,12 @@
 
     speed = 1.0;
     spin = "xy";
-    shading = ".,-~:;=!*#$@";
+    shading = #".,-~:;=!*#$@";
               #" ․⁚⁖⁘⁙";
               #" ░▒▓█";
               #"oO8oO0QoQ0o8Oo";
-        #"NaosBlue79";
+              #"NaosBlue79";
+              "\/-=+|><";
     light = "top-left";
   };
 }

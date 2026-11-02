@@ -1,10 +1,11 @@
 { config, pkgs, ... }:
 
 {
+  system.stateVersion = "26.05";
 
-  nixpkgs.config = {
-    allowUnfree = true;
-  };
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
+  nixpkgs.config.allowUnfree = true;
 
   boot.loader = {
     systemd-boot.enable = false;
@@ -22,7 +23,8 @@
   enable = true;
   wayland.enable = true; # Enables experimental Wayland support
   # compositor = "kwin"; # Optional: change from default "weston"
-};
+  };
+
   services.xserver.enable = true;  
   programs.niri.enable = true;
 
@@ -56,14 +58,6 @@
     config.common.default = "*";
   };
 
-  programs.nixvim = {
-    enable = true;
-  }; 
-
-  programs.firefox = {
-    enable = true;
-  };
-
   security.polkit.enable = true;
   services.dbus.enable = true;
 
@@ -85,19 +79,23 @@
     isNormalUser = true;
     description = "mz";
     extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [
-      kdePackages.kate
-    ];
   };
 
-  home-manager.useUserPackages = true;
-  home-manager.useGlobalPkgs = true;
-  home-manager.backupFileExtension = "backup";
+
+  home-manager = {
+    useUserPackages = true;
+    useGlobalPkgs = true;
+    backupFileExtension = "backup";
+  };
+
+  programs.zsh.enable = true;
+  users.defaultUserShell = pkgs.zsh;
 
 
   # System-level packages (available to all users)
   environment.systemPackages = with pkgs; [
     home-manager
+    nh
     jq
     git
     vim
@@ -110,6 +108,8 @@
     ghostty
     swaylock
     swayidle
+    starship
+    newsraft
     wl-clipboard
     pavucontrol
     brightnessctl
@@ -127,8 +127,4 @@
     nerd-fonts.iosevka
   ];
 
-
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
-  system.stateVersion = "26.05";
 }
