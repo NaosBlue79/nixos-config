@@ -13,19 +13,18 @@
       enable = true;
       efiSupport = true;
       device = "nodev";
-      useOSProber = true; # Optional: detect other OSes like Windows
+      useOSProber = true; # detect other OSes like Windows
     };
-    efi.canTouchEfiVariables = true; 
-  };  
+    efi.canTouchEfiVariables = true;
+  };
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
   services.displayManager.sddm = {
-  enable = true;
-  wayland.enable = true; # Enables experimental Wayland support
-  # compositor = "kwin"; # Optional: change from default "weston"
+    enable = true;
+    wayland.enable = true;
   };
 
-  services.xserver.enable = true;  
+  services.xserver.enable = true;
   programs.niri.enable = true;
 
   powerManagement.enable = true;
@@ -34,6 +33,9 @@
 
   networking.hostName = "znet";
   networking.networkmanager.enable = true;
+
+  # Left as `false` for WireGuard / Proton VPN. If you ever drop those,
+  # "loose" is a narrower setting that keeps some anti-spoofing protection.
   networking.firewall.checkReversePath = false;
 
   time.timeZone = "America/Chicago";
@@ -58,8 +60,11 @@
     config.common.default = "*";
   };
 
-  security.polkit.enable = true;
-  services.dbus.enable = true;
+  # MOVED: programs.nixvim now lives in home.nix. Nixvim generates a *user's*
+  # Neovim config, so it belongs in the Home Manager namespace.
+
+  # REMOVED: security.polkit.enable and services.dbus.enable.
+  # Both default to true in NixOS, so they were no-ops.
 
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
@@ -78,53 +83,31 @@
   users.users."mz" = {
     isNormalUser = true;
     description = "mz";
-    extraGroups = [ "networkmanager" "wheel" ];
+    # "video" added for backlight control (brightnessctl).
+    extraGroups = [ "networkmanager" "wheel" "video" ];
   };
 
-
-  home-manager = {
-    useUserPackages = true;
-    useGlobalPkgs = true;
-    backupFileExtension = "backup";
-  };
+  # REMOVED: the home-manager block that duplicated flake.nix, plus the
+  # commented-out copy of it. All home-manager settings are in flake.nix now.
 
   programs.zsh.enable = true;
   users.defaultUserShell = pkgs.zsh;
 
 
-  # System-level packages (available to all users)
+  # Trimmed to things the *system* needs, or that must exist outside any
+  # user session. Interactive tools moved to home.packages in home.nix.
   environment.systemPackages = with pkgs; [
-    home-manager
-    nh
-    jq
-    git
-    vim
-    bat
-    nixd
-    wget
-    btop
-    neovim
-    gparted
-    ghostty
-    swaylock
-    swayidle
-    starship
-    newsraft
-    wl-clipboard
-    pavucontrol
-    brightnessctl
-    proton-vpn
-    librewolf
-    python3
-    win2xcur
-    python314Packages.wandb
-    imagemagick
-    zenity
-    wireguard-tools
+    home-manager # for the `home-manager` CLI
+    nh # system rebuild helper
+    git # system-level VCS
+    vim # minimal rescue editor (keep!)
+    gparted # disk administration
+    wireguard-tools # needs root to manage interfaces
+    proton-vpn # needs daemon / NetworkManager integration
+    brightnessctl # backlight, paired with the "video" group above
   ];
 
   fonts.packages = with pkgs; [
     nerd-fonts.iosevka
   ];
-
 }

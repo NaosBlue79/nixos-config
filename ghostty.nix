@@ -15,7 +15,7 @@
           #"Aurora";
 
       # Transparency and blur
-      background-opacity = 0.25;
+      background-opacity = 0.5;
       background-blur = 100;
 
       # Font installed by configuration.nix
